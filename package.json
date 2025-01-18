@@ -15,5 +15,10 @@
     "url": "https://github.com/rima-das2004/airbnb/issues"
   },
   "homepage": "https://github.com/rima-das2004/airbnb#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.5"
+  }
 }
