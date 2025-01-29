@@ -9,10 +9,19 @@ const listSchema= new Schema({
     description:{
         type:String
     },
-    image:{
-        type:String,
-        set: (v)=>{ v===""? "https://www.luxuryvillasingoa.co.in/wp-content/uploads/2018/05/oceandeck-1024x683.jpg":v}
-    },
+    image:
+        
+        {   filename:String,
+            url:{
+                type:String,
+            default:"https://www.luxuryvillasingoa.co.in/wp-content/uploads/2018/05/oceandeck-1024x683.jpg",
+            set: (v)=> v===""? "https://www.luxuryvillasingoa.co.in/wp-content/uploads/2018/05/oceandeck-1024x683.jpg":v
+        
+        }
+        
+        }
+    
+    ,
     price:{
         type:Number,
         required:true

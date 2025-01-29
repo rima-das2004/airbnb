@@ -23,15 +23,22 @@ app.get("/",(req,res)=>{
     res.send("working");
 })
 
-app.get("/test",(req,res)=>{
+app.get("/test", (req,res)=>{
     let SampleList= new listing({
         title:"Villa",
         description:"new villa",
         price:50000,
         location:"Goa",
-        country:"India"
+        country:"India",
+        
     })
+    
+  SampleList.save().then((res)=>{
+    console.log(res)
+  })
+  .catch((err)=>{
+    console.log(err)
+  })
     res.send("OK")
-    SampleList.save()
 })
 
