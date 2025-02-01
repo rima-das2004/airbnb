@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit</title>
+</head>
+<body>
+    
+    <form method="post" action="/listing/<%= EditData._id %>?_method=PUT" >
+        <textarea name="listing[title]"> <%= EditData.title %></textarea>
+        <br>
+        <textarea name="listing[description]"><%= EditData.description %></textarea><br>
+        <textarea name="listing[image][url]"> <%= EditData.image.url %></textarea>
+        <textarea name="listing[price]"><%= EditData.price %></textarea><br>
+        <textarea name="listing[location]"><%= EditData.location %></textarea><br>
+        <textarea name="listing[country]"><%= EditData.country %></textarea><br>
+        
+        <br>
+       
+            <button type="submit">SUBMIT</button>
+        </form>
+        <br>
+</body>
+</html>

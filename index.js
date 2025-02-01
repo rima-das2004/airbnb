@@ -3,11 +3,17 @@ const app=express();
 const mongoose=require("mongoose");
 const listing=require("./models/listing.js")
 const ejs=require("ejs");
-app.set("view engine","ejs")
+const methodOverride=require("method-override");
+const ejsMate=require("ejs-mate");
+app.set("view engine","ejs");
 const path=require("path")
 app.set("views",path.join(__dirname,"views"));
-const ejsMate=require("ejs-mate");
+const engine=require("ejs-mate");
 app.use(express.urlencoded({extended:true}));
+app.use(methodOverride("_method"));
+app.engine("ejs",engine);
+
+
 async function main() {
     await mongoose.connect('mongodb://127.0.0.1:27017/GypsyVerse');
   
@@ -71,3 +77,30 @@ app.get("/listing/:id",async (req,res)=>{
   res.render("listing/show.ejs",{DataById});
 })
 
+app.get("/listing/:id/edit",async(req,res)=>{
+  
+  let {id}=req.params;
+  console.log(id)
+  let EditData=await listing.findById(id)
+  console.log(EditData)
+  res.render("listing/edit.ejs",{EditData});
+})
+
+app.put("/listing/:id",async (req,res)=>{
+  console.log(req.params)
+  let {id}=req.params;
+  let dataEdit=req.body.listing;
+  await listing.findByIdAndUpdate(id,{...dataEdit})
+  res.redirect(`/listing/${id}`);
+})
+
+app.delete("/listing/:id",async (req,res)=>{
+  let {id}=req.params;
+  listing.deleteOne({_id:id}).then((res)=>{
+    console.log(res)
+  })
+  .catch((err)=>{
+    console.log(err)
+  })
+  res.redirect("/listing");
+})
