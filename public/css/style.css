@@ -1,0 +1,117 @@
+body{
+    font-family: "Lato", serif;
+    color: #26161f !important;
+}
+.marginBottom{
+    margin-bottom: 5rem !important;
+}
+body p{
+    margin: 0px;
+}
+.navBarStyle{
+    background-color: white;
+}
+.logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.25rem;
+    
+}
+.logo p{
+    font-family: "Alegreya Sans SC", serif;
+    margin: 0px;
+    color:#BF3880;
+}
+.navColor .navbar-nav .nav-item .nav-link {
+    color:#26161f;
+}
+.logo .homeWork{
+    font-size: 27px !important;
+    color:#BF3880;
+}
+
+/* footer */
+footer{
+    background-color: #EAE6F0;
+}
+footer .container .rowStyle{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+footer .container .rowStyle .colS{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer .container .rowStyle .colS a{
+    text-decoration: none;
+    color: #26161f;
+
+}
+footer .container .rowStyle .colS a .fa{
+    margin-left: 15px;
+    border-radius: 50%;
+    border: 1px solid #26161f;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.5s linear;
+}
+footer .container .rowStyle .colS .term:hover{
+    color:#BF3880;
+    text-decoration: underline;
+    transition: all 0.5s linear;
+}
+footer .container .rowStyle .colS a .fa:hover{
+    background-color: #BF3880;
+    color: #EAE6F0;
+    border: 1px solid #BF3880;
+}
+/* listing index */
+.listContainer{
+    display: flex;
+    flex-wrap: wrap;
+}
+.listContainer .row .listCol{
+    width: 20rem;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+}
+.listContainer .listRow{
+    display: flex;
+    justify-content: flex-start;
+ 
+}
+.listContainer .row .listCol a{
+    text-decoration: none;
+
+}
+.listContainer .row .listCol a .card{
+    border: none !important;
+}
+.listContainer .row .listCol a .card img{
+    border-radius: 10px;
+}
+.listContainer .row .listCol a .card p,article{
+    transition: all 0.5s linear;
+}
+.listContainer .row .listCol a .card p:hover{
+    color: #BF3880;
+}
+.listContainer .row .listCol a .card article:hover{
+    color: #D68FB0;
+}
+.showStyle .showRow .showCard{
+    border: none;
+}
+.showStyle .showRow .showCard .imgCard{
+    width: 100%;
+    height: 20rem;
+}

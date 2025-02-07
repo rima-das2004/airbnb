@@ -1,20 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GypsyVerse</title>
-</head>
+<% layout('layouts/boilerplate') -%>
 <body>
-    <form action="/listing/create" method="get">
+    <!-- <form action="/listing/create" method="get">
         <button type="submit">Create a new post</button>
-    </form>
-   <% for (let i of listData){ %>
-        <ul>
-            <li><a href="/listing/<%= i.id %>"><%= i.title %></a></li>
-        </ul> 
-       
-   <% } %>
+    </form> -->
+    <section class="container listContainer">
+        <div class="row listRow">
+                <% for (let i of listData){ %>
+                    
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 ms-4 listCol"  style="width: 18.7rem; height:25rem">
+                    <a href="/listing/<%= i.id %>">
+                    <div class="card" style="width: 18.7rem; overflow: hidden;">
+                        <img src="<%= i.image.url %>" class="card-img-top" alt="product img" style="width: 18.7rem; height:18.5rem">
+                        <div class="card-body ps-0 pt-1">
+                          <p class="card-text fw-bold"><%= i.title %></p>
+                          <article>&#8377;<%= i.price .toLocaleString("en-IN")%>/night</article>
+                        </div>
+                      </div>
+                    </a>
+                </div>
+            
+               <% } %>
+            </div>
+    </section>
+
     
 </body>
 </html>

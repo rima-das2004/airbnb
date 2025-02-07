@@ -12,11 +12,10 @@ const engine=require("ejs-mate");
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride("_method"));
 app.engine("ejs",engine);
-
+app.use(express.static(path.join(__dirname,"/public")));
 
 async function main() {
     await mongoose.connect('mongodb://127.0.0.1:27017/GypsyVerse');
-  
     // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
   }
 main().then(()=>{
