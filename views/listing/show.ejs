@@ -1,12 +1,18 @@
 <% layout('layouts/boilerplate') -%>
 <body>
-    <h1>Details: <%= DataById.title %></h1>
-    <br>
+    <div class="zoomImg">
+        <i class="fa fa-close d-none closeHoverImg"></i>
+    </div>
+    <img src="<%= DataById.image.url %>" alt="gb" class="imgHover d-none">
     
-    <div class="container showStyle">
+    <div class="container showStyle hoverCont">
+        
+        <h1>Details: <%= DataById.title %></h1>
+        <br>
         <div class="row showRow d-flex justify-content-center">
             <div class="card showCard" style="width: 50%;">
-                <div class="card-body overflow-hidden imgCard rounded-3 p-0">
+                
+                <div class="card-body overflow-hidden imgCard rounded-3 p-0 showImgCard">
                     <img src="<%= DataById.image.url %>" class="card-img-top rounded-2" alt="imageDestination">
                 </div>
                 
