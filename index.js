@@ -13,7 +13,8 @@ app.use(express.urlencoded({extended:true}));
 app.use(methodOverride("_method"));
 app.engine("ejs",engine);
 app.use(express.static(path.join(__dirname,"/public")));
-
+const asyncWrap=require("./utils/AsyncWrap.js")
+const ExpressError=require("./utils/ExpressError.js")
 async function main() {
     await mongoose.connect('mongodb://127.0.0.1:27017/GypsyVerse');
     // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
@@ -58,48 +59,46 @@ app.get("/listing",async(req,res)=>{
 app.get("/listing/create",(req,res)=>{
   res.render("listing/create.ejs")
 })
-app.post("/listing",async (req,res)=>{
+app.post("/listing",asyncWrap( async (req,res)=>{
   let list=req.body.listing;
   console.log(list)
   let newSample= new listing(list)
-  newSample.save().then((res)=>{
-    console.log(res)
-  })
-  .catch((err)=>{
-    console.log(err);
-  })
+  await newSample.save();
   res.redirect("/listing");
-})
-app.get("/listing/:id",async (req,res)=>{
+}))
+app.get("/listing/:id",asyncWrap( async (req,res)=>{
   let {id}=req.params;
   let DataById=await listing.findById(id);
   res.render("listing/show.ejs",{DataById});
-})
+}))
 
-app.get("/listing/:id/edit",async(req,res)=>{
+app.get("/listing/:id/edit",asyncWrap( async(req,res)=>{
   
   let {id}=req.params;
   console.log(id)
   let EditData=await listing.findById(id)
   console.log(EditData)
   res.render("listing/edit.ejs",{EditData});
-})
+}))
 
-app.put("/listing/:id",async (req,res)=>{
+app.put("/listing/:id",asyncWrap( async (req,res)=>{
   console.log(req.params)
   let {id}=req.params;
   let dataEdit=req.body.listing;
   await listing.findByIdAndUpdate(id,{...dataEdit})
   res.redirect(`/listing/${id}`);
-})
+}))
 
-app.delete("/listing/:id",async (req,res)=>{
+app.delete("/listing/:id",asyncWrap( async (req,res)=>{
   let {id}=req.params;
-  listing.deleteOne({_id:id}).then((res)=>{
-    console.log(res)
-  })
-  .catch((err)=>{
-    console.log(err)
-  })
+  listing.deleteOne({_id:id})
   res.redirect("/listing");
+}));
+app.all("*",(req,res,next)=>{
+  next(new ExpressError(404,"page not found"));
+
+})
+app.use((err,req,res,next)=>{
+  let{status=500,message="something went wrong"}=err;
+  res.status(status).send(message);
 })

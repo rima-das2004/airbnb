@@ -3,38 +3,36 @@
 <body>
     <div class="container">
         <div class="row mb-5">
-            <form method="post" action="/listing/<%= EditData._id %>?_method=PUT" >
+            <form method="post" action="/listing/<%= EditData._id %>?_method=PUT" novalidate class="needs-validation">
                 <h1>Update Details of <%= EditData.title %></h1>
                 <br><br>
                 <div class="input-group mb-3">
                     <span class="input-group-text">Title</span>
-                    <input type="text" name="listing[title]" class="form-control" value="<%= EditData.title %>">
+                    <input type="text" name="listing[title]" class="form-control" value="<%= EditData.title %>" required>
                   </div>
             
                   <div class="input-group mb-3">
                     <span class="input-group-text">Description</span>
-                    <textarea class="form-control" rows="5" name="listing[description]" aria-label="With textarea">
-                        <%= EditData.description %>
-                    </textarea>
+                    <textarea class="form-control" rows="5" name="listing[description]" aria-label="With textarea" required><%= EditData.description %></textarea>
                   </div>
                   
                   <div class="input-group mb-3">
                     <span class="input-group-text">Image Url</span>
-                    <input type="text" name="listing[image][url]" class="form-control" value="<%= EditData.image.url %>">
+                    <input type="text" name="listing[image][url]" class="form-control" value="<%= EditData.image.url %>" required>
                   </div> 
                 
                   <div class="input-group mb-3">
                     <span class="input-group-text">Price</span>
-                    <input type="text" name="listing[price]" class="form-control" value="<%= EditData.price %>">
+                    <input type="text" name="listing[price]" class="form-control" value="<%= EditData.price %>" required>
                   </div> 
 
                   <div class="input-group mb-3">
                     <span class="input-group-text">Location</span>
-                    <input type="text" name="listing[location]" class="form-control" value="<%= EditData.location %>">
+                    <input type="text" name="listing[location]" class="form-control" value="<%= EditData.location %>" required>
                   </div> 
                   <div class="input-group mb-3">
                     <span class="input-group-text">Country</span>
-                    <input type="text" name="listing[country]" class="form-control" value="<%= EditData.country %>">
+                    <input type="text" name="listing[country]" class="form-control" value="<%= EditData.country %>" required>
                   </div> 
                 
                 <br>
