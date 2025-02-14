@@ -84,21 +84,27 @@ app.get("/listing/:id/edit",asyncWrap( async(req,res)=>{
 app.put("/listing/:id",asyncWrap( async (req,res)=>{
   console.log(req.params)
   let {id}=req.params;
-  let dataEdit=req.body.listing;
+  let dataEdit=req.body.listing; 
   await listing.findByIdAndUpdate(id,{...dataEdit})
   res.redirect(`/listing/${id}`);
 }))
 
-app.delete("/listing/:id",asyncWrap( async (req,res)=>{
+app.delete("/listing/:id",asyncWrap(  async (req,res)=>{
   let {id}=req.params;
-  listing.deleteOne({_id:id})
+  await listing.deleteOne({_id:id})
   res.redirect("/listing");
 }));
+
+app.get("/admin",(req,res)=>{
+  throw new ExpressError(403,"only admin can access")
+})
+
 app.all("*",(req,res,next)=>{
-  next(new ExpressError(404,"page not found"));
+  throw new ExpressError(404,"page not found");
 
 })
+
 app.use((err,req,res,next)=>{
   let{status=500,message="something went wrong"}=err;
-  res.status(status).send(message);
+  res.status(status).render("errorModel/first.ejs",{message:message})
 })
