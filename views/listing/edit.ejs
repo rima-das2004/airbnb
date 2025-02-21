@@ -15,7 +15,10 @@
                     <span class="input-group-text">Description</span>
                     <textarea class="form-control" rows="5" name="listing[description]" aria-label="With textarea" required><%= EditData.description %></textarea>
                   </div>
-                  
+                  <div class="input-group mb-3">
+                    <span class="input-group-text">Image File Name</span>
+                    <input type="text" name="listing[image][filename]" class="form-control" value="<%= EditData.image.filename %>" required>
+                  </div>
                   <div class="input-group mb-3">
                     <span class="input-group-text">Image Url</span>
                     <input type="text" name="listing[image][url]" class="form-control" value="<%= EditData.image.url %>" required>

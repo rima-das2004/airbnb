@@ -156,3 +156,11 @@ footer .container .rowStyle .colS a .fa:hover{
     position: relative;
     z-index: 10;
 }
+
+/* navbar */
+.navActive{
+    color: #BF3880 !important;
+}
+.active{
+    color: #BF3880 !important;
+}

@@ -11,7 +11,10 @@ const listSchema= new Schema({
     },
     image:
         
-        {   filename:String,
+        {   filename:{
+            type:String,
+            set:(v)=> v===""? "listName":v
+        },
             url:{
                 type:String,
             default:"https://www.luxuryvillasingoa.co.in/wp-content/uploads/2018/05/oceandeck-1024x683.jpg",

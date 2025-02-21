@@ -15,6 +15,7 @@ app.engine("ejs",engine);
 app.use(express.static(path.join(__dirname,"/public")));
 const asyncWrap=require("./utils/AsyncWrap.js")
 const ExpressError=require("./utils/ExpressError.js")
+const {listingSchema}=require("./joiSchema.js");
 async function main() {
     await mongoose.connect('mongodb://127.0.0.1:27017/GypsyVerse');
     // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
@@ -52,6 +53,20 @@ app.get("/",(req,res)=>{
 //   })
 //     res.send("OK")
 // })
+
+//validation schema middileware
+const validateListing=(req,res,next)=>{
+  let {error}=listingSchema.validate(req.body);
+  console.log(error)
+  if(error){
+    let errMsg=error.details.map((el)=> el.message).join(",");
+    console.log(errMsg)
+    throw new ExpressError(400, errMsg)
+  }
+  else{
+    next();
+  }
+}
 app.get("/listing",async(req,res)=>{
   const listData= await listing.find({});
   res.render("listing/index.ejs",{listData})
@@ -59,9 +74,11 @@ app.get("/listing",async(req,res)=>{
 app.get("/listing/create",(req,res)=>{
   res.render("listing/create.ejs")
 })
-app.post("/listing",asyncWrap( async (req,res)=>{
+app.post("/listing",validateListing,asyncWrap( async (req,res)=>{
+  
   let list=req.body.listing;
-  console.log(list)
+  
+  //console.log(list)
   let newSample= new listing(list)
   await newSample.save();
   res.redirect("/listing");
@@ -81,11 +98,13 @@ app.get("/listing/:id/edit",asyncWrap( async(req,res)=>{
   res.render("listing/edit.ejs",{EditData});
 }))
 
-app.put("/listing/:id",asyncWrap( async (req,res)=>{
+app.put("/listing/:id",validateListing,asyncWrap( async (req,res)=>{
   console.log(req.params)
   let {id}=req.params;
   let dataEdit=req.body.listing; 
-  await listing.findByIdAndUpdate(id,{...dataEdit})
+  console.log(dataEdit)
+  const spread=await listing.findByIdAndUpdate(id,{...dataEdit})
+  console.log("spread",spread)
   res.redirect(`/listing/${id}`);
 }))
 
@@ -108,3 +127,5 @@ app.use((err,req,res,next)=>{
   let{status=500,message="something went wrong"}=err;
   res.status(status).render("errorModel/first.ejs",{message:message})
 })
+
+

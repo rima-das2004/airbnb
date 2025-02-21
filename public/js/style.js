@@ -62,3 +62,17 @@ try {
   console.log(error)
 }
 
+try{
+  const active=document.querySelector(".navActive");
+  const navLink=document.querySelector(".nav-link");
+  navLink.addEventListener("click",()=>{
+    navLink.classList.add(".active");
+    navLink.classList.remove(".navActive");
+    
+
+  })
+  
+}
+catch{
+
+}
