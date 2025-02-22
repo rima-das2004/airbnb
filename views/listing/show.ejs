@@ -34,7 +34,50 @@
                     </form>
                     </div>
               </div>
+              <hr>
+              <div class="row">
+                <form action='/listing/review?id=<%= DataById._id %>' method="post" novalidate class="needs-validation">
+                    <h3>Leave a Review</h3>
+                        <br>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text rounded">Rating</span>
+                            <input type="range" class="form-range" min="1" max="5" id="customRange1" name="review[rating]" required>
+                            <div class="valid-feedback">
+                              Looks good!
+                            </div>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Comment</span>
+                                <textarea class="form-control" rows="5" name="review[comment]" aria-label="With textarea" required></textarea>
+                                <div class="valid-feedback">
+                                  Looks good!
+                                </div>
+                              
+                              </div>
+                              
+                              <button class="btn btn-primary px-5 mb-5" style="background-color: #BF3880; color:white; border:none;" type="submit">SEND</button>
+                </form>
+                <div class="row">
+                    <h3>All Reviews</h3>
+                    <div class="row d-flex" style="gap: 10px; justify-content:space-between;">
+                        <% for (let i of DataById.reviews){ %>
+                            <div class="card" style="width: 18.2rem;">
+                                <div class="card-body">
+                                  <h5 class="card-title">User</h5>
+    
+                                  <p class="card-text"><%= i.comment %></p>
+                                  <article><%= i.rating %> stars</article>
+                                  <a href="#" class="btn btn-primary px-3 mt-2" style="background-color: #BF3880; color:white; border:none;" >DELETE</a>
+                                </div>
+                              </div>
+                        <% } %>
+                    </div>
+                    
+                </div>
+              </div>
+
         </div>
+        
     </div>
 
 </body>

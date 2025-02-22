@@ -1,7 +1,8 @@
 const express=require("express");
 const app=express();
 const mongoose=require("mongoose");
-const listing=require("./models/listing.js")
+const listing=require("./models/listing.js")//listing model
+const Review=require("./models/reviews.js")//review model
 const ejs=require("ejs");
 const methodOverride=require("method-override");
 const ejsMate=require("ejs-mate");
@@ -15,7 +16,7 @@ app.engine("ejs",engine);
 app.use(express.static(path.join(__dirname,"/public")));
 const asyncWrap=require("./utils/AsyncWrap.js")
 const ExpressError=require("./utils/ExpressError.js")
-const {listingSchema}=require("./joiSchema.js");
+const {listingSchema, reviewSchema}=require("./joiSchema.js");
 async function main() {
     await mongoose.connect('mongodb://127.0.0.1:27017/GypsyVerse');
     // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
@@ -54,7 +55,9 @@ app.get("/",(req,res)=>{
 //     res.send("OK")
 // })
 
-//validation schema middileware
+
+
+//validation listing schema middileware
 const validateListing=(req,res,next)=>{
   let {error}=listingSchema.validate(req.body);
   console.log(error)
@@ -67,6 +70,39 @@ const validateListing=(req,res,next)=>{
     next();
   }
 }
+//validation review schema middleware 
+const validateReview=(req,res,next)=>{
+  let {error}=reviewSchema.validate(req.body);
+  console.log(error)
+  if(error){
+    let errMsg=error.details.map((el)=> el.message).join(",");
+    console.log(errMsg)
+    throw new ExpressError(400, errMsg)
+  }
+  else{
+    next();
+  }
+}
+
+//-------------------------------review section-------------------------
+
+app.post("/listing/review",validateReview,asyncWrap(async(req,res)=>{
+  let reviewRes=req.body.review;
+  let {id}=req.query;
+  let rev=new Review({...reviewRes});
+  console.log(rev)
+  let list=await listing.findById(id);
+  console.log(list)
+  list.reviews.push(rev)
+  await rev.save();
+  await list.save();
+  res.redirect(`/listing/${id}`);
+
+}))
+
+
+
+// ---------------------------------------------------------------------------------------------------
 app.get("/listing",async(req,res)=>{
   const listData= await listing.find({});
   res.render("listing/index.ejs",{listData})
@@ -85,7 +121,7 @@ app.post("/listing",validateListing,asyncWrap( async (req,res)=>{
 }))
 app.get("/listing/:id",asyncWrap( async (req,res)=>{
   let {id}=req.params;
-  let DataById=await listing.findById(id);
+  let DataById=await listing.findById(id).populate("reviews");
   res.render("listing/show.ejs",{DataById});
 }))
 
@@ -102,9 +138,9 @@ app.put("/listing/:id",validateListing,asyncWrap( async (req,res)=>{
   console.log(req.params)
   let {id}=req.params;
   let dataEdit=req.body.listing; 
-  console.log(dataEdit)
+  //console.log(dataEdit)
   const spread=await listing.findByIdAndUpdate(id,{...dataEdit})
-  console.log("spread",spread)
+  //console.log("spread",spread)
   res.redirect(`/listing/${id}`);
 }))
 
@@ -127,5 +163,7 @@ app.use((err,req,res,next)=>{
   let{status=500,message="something went wrong"}=err;
   res.status(status).render("errorModel/first.ejs",{message:message})
 })
+
+
 
 
