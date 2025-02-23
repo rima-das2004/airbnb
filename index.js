@@ -100,7 +100,29 @@ app.post("/listing/review",validateReview,asyncWrap(async(req,res)=>{
 
 }))
 
+app.delete("/listing/:id/review/:revId",asyncWrap(async(req,res)=>{
+  let{id,revId}=req.params;
+  await listing.findByIdAndUpdate(id,{$pull:{reviews:revId}});
+  await Review.findByIdAndDelete(revId)
+  res.redirect(`/listing/${id}`);
+}))
 
+
+app.get("/listing/:listId/review/edit/:id",asyncWrap( async(req,res)=>{
+  let {listId,id}=req.params;
+  console.log(id)
+  let data=await Review.findById(id);
+  console.log(data)
+  res.render("listing/reviewEdit.ejs",{data,listId:listId});
+}))
+
+app.put("/listing/:listId/review/edit/:id",validateReview,asyncWrap( async(req,res)=>{
+  let {listId,id}=req.params;
+  let data=req.body.review;
+  console.log("comment",data.comment)
+  await Review.findByIdAndUpdate(id,{comment:data.comment,rating:data.rating,createdAt:Date.now()})
+  res.redirect(`/listing/${listId}`)
+}))
 
 // ---------------------------------------------------------------------------------------------------
 app.get("/listing",async(req,res)=>{

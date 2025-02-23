@@ -57,17 +57,30 @@
                               
                               <button class="btn btn-primary px-5 mb-5" style="background-color: #BF3880; color:white; border:none;" type="submit">SEND</button>
                 </form>
+                <hr>
                 <div class="row">
-                    <h3>All Reviews</h3>
-                    <div class="row d-flex" style="gap: 10px; justify-content:space-between;">
+                    <h3 class="mb-2">All Reviews</h3>
+                    <div class="row d-flex mb-3" style="gap: 10px; justify-content:flex-start;">
                         <% for (let i of DataById.reviews){ %>
-                            <div class="card" style="width: 18.2rem;">
+                            <div class="card" style="width: 25rem;">
                                 <div class="card-body">
-                                  <h5 class="card-title">User</h5>
+                                  <div class="row" style="align-items: center; gap:
+                                  10px;">
+                                    <div class="img rounded-circle" style="width: 50px; height:50px; background-color:#BF3880; overflow:hidden;"></div>
+                                    <h5 style="display: contents;">User</h5>
+                                  </div>
     
                                   <p class="card-text"><%= i.comment %></p>
                                   <article><%= i.rating %> stars</article>
-                                  <a href="#" class="btn btn-primary px-3 mt-2" style="background-color: #BF3880; color:white; border:none;" >DELETE</a>
+                                  <div class="row d-flex" style="justify-content:space-between;">
+                                    <form action="/listing/<%= DataById._id %>/review/edit/<%= i._id%>" method="get" style="display:contents;">
+                                      <button type="submit"  class="btn btn-primary px-3 mt-2" style="background-color: #BF3880; color:white; border:none;" >EDIT</button>
+                                    </form>
+                                    <form action="/listing/<%=DataById._id%>/review/<%= i._id%>?_method=delete" method="post" style="display:contents;">
+                                      <button type="submit"  class="btn btn-primary px-3 mt-2" style="background-color: #BF3880; color:white; border:none;" >DELETE</button>
+                                    </form>
+                                  </div>
+                                  
                                 </div>
                               </div>
                         <% } %>

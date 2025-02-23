@@ -1,0 +1,30 @@
+<% layout('layouts/boilerplate') -%>
+<div class="container">
+    <div class="row d-flex" style="justify-content: center; margin-bottom:150px; margin-top:112px;">
+        <div class="card" style="width: 25rem;">
+            <div class="card-body">
+                <form action='/listing/<%= listId %>/review/edit/<%= data._id %>?_method=put' method="post" novalidate class="needs-validation">
+                    <h3>Leave a Review</h3>
+                        <br>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text rounded">Rating</span>
+                            <input type="range" class="form-range" min="1" max="5" id="customRange1" name="review[rating]" value="<%= data.rating %>" required>
+                            <div class="valid-feedback">
+                              Looks good!
+                            </div>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Comment</span>
+                                <textarea class="form-control" rows="5" name="review[comment]"aria-label="With textarea" required><%= data.comment %> </textarea>
+                                <div class="valid-feedback">
+                                  Looks good!
+                                </div>
+                              
+                              </div>
+                              
+                              <button class="btn btn-primary px-5 mb-5" style="background-color: #BF3880; color:white; border:none;" type="submit">SUBMIT</button>
+                </form>
+            </div>
+          </div>
+    </div>
+</div>
