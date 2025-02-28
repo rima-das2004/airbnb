@@ -17,10 +17,18 @@ app.use(express.static(path.join(__dirname,"/public")));
 const asyncWrap=require("./utils/AsyncWrap.js")
 const ExpressError=require("./utils/ExpressError.js")
 const {listingSchema, reviewSchema}=require("./joiSchema.js");
+const session=require("express-session");
+const flash=require("connect-flash")
 
 const listing=require("./routes/listing.js");
 const review=require("./routes/reviews.js");
-
+const sessionOpt={
+  secret:"mysupersecretcode",
+  resave:false,
+  saveUninitialized:true
+}
+app.use(session(sessionOpt));
+app.use(flash())
 async function main() {
     await mongoose.connect('mongodb://127.0.0.1:27017/GypsyVerse');
     // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
