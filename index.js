@@ -27,8 +27,6 @@ const sessionOpt={
   resave:false,
   saveUninitialized:true
 }
-app.use(session(sessionOpt));
-app.use(flash())
 async function main() {
     await mongoose.connect('mongodb://127.0.0.1:27017/GypsyVerse');
     // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
@@ -67,7 +65,13 @@ app.get("/",(req,res)=>{
 //     res.send("OK")
 // })
 
-
+app.use(session(sessionOpt));
+app.use(flash())
+app.use((req,res,next)=>{
+  res.locals.success=req.flash("success");
+  res.locals.errMsg=req.flash("error");
+  next()
+})
 
 app.use("/listing",listing);
 app.use("/listing",review)

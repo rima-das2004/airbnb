@@ -37,21 +37,33 @@ router.post("/",validateListing,asyncWrap( async (req,res)=>{
     //console.log(list)
     let newSample= new listing(list)
     await newSample.save();
+    req.flash("success","Listing is created successfully")
     res.redirect("/listing");
   }))
 router.get("/:id",asyncWrap( async (req,res)=>{
     let {id}=req.params;
     let DataById=await listing.findById(id).populate("reviews");
-    res.render("listing/show.ejs",{DataById});
+    if(!DataById){
+      req.flash("error","List you are searching for does not exist");
+      res.redirect("/listing")
+    }
+    else{
+      res.render("listing/show.ejs",{DataById});
+    }
+    
   }))
   
-router.get("/:id/edit",asyncWrap( async(req,res)=>{
-    
+router.get("/:id/edit",asyncWrap(async(req,res)=>{
     let {id}=req.params;
     console.log(id)
     let EditData=await listing.findById(id)
+    if(!EditData){
+      req.flash("error","List you are searching for does not exist");
+      res.redirect("/listing")
+    }
+    else{
     console.log(EditData)
-    res.render("listing/edit.ejs",{EditData});
+    res.render("listing/edit.ejs",{EditData});}
   }))
   
 router.put("/:id",validateListing,asyncWrap( async (req,res)=>{
@@ -60,16 +72,29 @@ router.put("/:id",validateListing,asyncWrap( async (req,res)=>{
     let dataEdit=req.body.listing; 
     //console.log(dataEdit)
     const spread=await listing.findByIdAndUpdate(id,{...dataEdit})
+    if(!spread){
+      req.flash("error","List you are searching for does not exist");
+      res.redirect("/listing")
+    }
+    else{
+    req.flash("success","Successfully Edited");
     //console.log("spread",spread)
     res.redirect(`/listing/${id}`);
+    }
   }))
   
 router.delete("/:id",asyncWrap(  async (req,res)=>{
     let {id}=req.params;
-    await listing.findByIdAndDelete(id)
-    res.redirect("/listing");
+    let data=await listing.findByIdAndDelete(id)
+    if(!data){
+      req.flash("error","List you are searching for does not exist");
+      res.redirect("/listing")
+    }
+    else{
+    req.flash("success","Successfully Deleted");
+    res.redirect("/listing");}
   }));
   
 
 
-  module.exports=router;
+module.exports=router;
