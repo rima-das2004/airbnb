@@ -1,0 +1,39 @@
+<% layout('layouts/boilerplate') -%>
+<body>
+    <div class="container mt-5">
+        <div class="row col-6 offset-3 mb-5 border border-secondary-subtle p-5">
+            <h2 class="mb-5">Registration for Gypsy Verse</h2>
+            <form action="/signup" method="post" novalidate class="needs-validation">
+                <div class="input-group mb-5">
+                    <span class="input-group-text">Username</span>
+                    <input type="text" name="username" class="form-control" required>
+                    <div class="valid-feedback">
+                      Looks good!
+                    </div>
+                
+                  </div>
+                  <div class="input-group mb-5">
+                    <span class="input-group-text">Email</span>
+                    <input type="email" name="email" class="form-control" required>
+                    <div class="valid-feedback">
+                      Looks good!
+                    </div>
+                
+                  </div>
+                  <div class="input-group mb-5">
+                    <span class="input-group-text">Password</span>
+                    <input type="password" name="password" class="form-control" required>
+                    <div class="valid-feedback">
+                      Looks good!
+                    </div>
+                
+                  </div>
+                 
+                  <button type="submit" class="btn btn-primary px-5" style="background-color: #BF3880; color:white; border:none;">Sign up</button>
+                  
+            </form>
+            
+        </div>
+    </div>
+    <br><br><br> <br>
+</body>

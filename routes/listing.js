@@ -6,7 +6,9 @@ const listing=require("../models/listing.js")//listing model
 const asyncWrap=require("../utils/AsyncWrap.js")
 const ExpressError=require("../utils/ExpressError.js")
 const {listingSchema, reviewSchema}=require("../joiSchema.js");
-
+const passport=require("passport");
+const passportLocal=require("passport-local");
+const passportLocalMongoose=require("passport-local-mongoose");
 
 
 

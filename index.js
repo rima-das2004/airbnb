@@ -1,8 +1,6 @@
 const express=require("express");
 const app=express();
 const mongoose=require("mongoose");
-
-
 const ejs=require("ejs");
 const methodOverride=require("method-override");
 const ejsMate=require("ejs-mate");
@@ -19,13 +17,22 @@ const ExpressError=require("./utils/ExpressError.js")
 const {listingSchema, reviewSchema}=require("./joiSchema.js");
 const session=require("express-session");
 const flash=require("connect-flash")
-
+const passport=require("passport");
+const passportLocal=require("passport-local");
+const passportLocalMongoose=require("passport-local-mongoose");
 const listing=require("./routes/listing.js");
 const review=require("./routes/reviews.js");
+const user=require("./routes/users.js");
+const User=require("./models/user.js")
 const sessionOpt={
   secret:"mysupersecretcode",
   resave:false,
-  saveUninitialized:true
+  saveUninitialized:true,
+  cookie:{
+    expires:Date.now()+7*24*60*60*1000,
+    httpOnly:true,
+    maxAge:7*24*60*60*1000
+  }
 }
 async function main() {
     await mongoose.connect('mongodb://127.0.0.1:27017/GypsyVerse');
@@ -72,9 +79,18 @@ app.use((req,res,next)=>{
   res.locals.errMsg=req.flash("error");
   next()
 })
+//passport
+app.use(passport.initialize());
+app.use(passport.session())
+passport.use(new passportLocal(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
 
 app.use("/listing",listing);
-app.use("/listing",review)
+app.use("/listing",review);
+app.use("/",user)
 
 
 app.get("/admin",(req,res)=>{
