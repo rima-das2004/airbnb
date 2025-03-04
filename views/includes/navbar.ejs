@@ -1,13 +1,13 @@
-<nav class="navbar navbar-expand-lg bg-body-light sticky-top border-bottom navBarStyle">
+<div class="container">
+  <nav class="navbar navbar-expand-lg bg-body-light sticky-top border-bottom navBarStyle">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">
         <div class="logo"><span class="material-symbols-outlined homeWork">
             home_work
             </span></i> <p>GypsyVerse</p></div>
-        
     </a>
       
-      <div class="collapse navbar-collapse navColor " id="navbarNav">
+      <div class="collapse navbar-collapse navColor justify-content-between" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
             <a class="nav-link navActive" aria-current="page" href="/">Home</a>
@@ -19,6 +19,25 @@
             <a class="nav-link" href="/listing/create">Add More Listings</a>
           </li>
         </ul>
+        <span class="nav-text">
+          <li class="nav-item dropdown" style="list-style-type: none;">
+            <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+             <i class="fa fa-user" style="padding:6px; width: 30px; height:30px; border-radius:50%; border:1px solid #adadad;text-align:center; color:#555454;"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <% if (!currentUser) { %>
+                <li class="modify-li-auth"><a class="dropdown-item nav-link" href="/signup">SignUp</a></li>
+                <li class="modify-li-auth modify-li-auth-last"><a class="dropdown-item nav-link" href="/login">Login</a></li>
+              <% } %>
+              <% if (currentUser) { %>
+                <li class="modify-li-auth modify-li-auth-last"><a class="dropdown-item nav-link" href="/logout">Log Out</a></li>
+                <% } %>
+            </ul>
+          </li>
+          
+        </span>
+        
       </div>
     </div>
   </nav>
+</div>

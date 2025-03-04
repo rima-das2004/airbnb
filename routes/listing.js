@@ -9,7 +9,7 @@ const {listingSchema, reviewSchema}=require("../joiSchema.js");
 const passport=require("passport");
 const passportLocal=require("passport-local");
 const passportLocalMongoose=require("passport-local-mongoose");
-
+const {isLoggedIn}=require("../middleware.js")
 
 
 const validateListing=(req,res,next)=>{
@@ -29,13 +29,14 @@ router.get("/",async(req,res)=>{
     const listData= await listing.find({});
     res.render("listing/index.ejs",{listData})
   })
-router.get("/create",(req,res)=>{
+router.get("/create",isLoggedIn,(req,res)=>{
+
     res.render("listing/create.ejs")
   })
 router.post("/",validateListing,asyncWrap( async (req,res)=>{
     
     let list=req.body.listing;
-    
+
     //console.log(list)
     let newSample= new listing(list)
     await newSample.save();
@@ -55,7 +56,7 @@ router.get("/:id",asyncWrap( async (req,res)=>{
     
   }))
   
-router.get("/:id/edit",asyncWrap(async(req,res)=>{
+router.get("/:id/edit",isLoggedIn,asyncWrap(async(req,res)=>{
     let {id}=req.params;
     console.log(id)
     let EditData=await listing.findById(id)
@@ -85,12 +86,14 @@ router.put("/:id",validateListing,asyncWrap( async (req,res)=>{
     }
   }))
   
-router.delete("/:id",asyncWrap(  async (req,res)=>{
+router.delete("/:id",isLoggedIn,asyncWrap(  async (req,res)=>{
     let {id}=req.params;
     let data=await listing.findByIdAndDelete(id)
     if(!data){
+      
       req.flash("error","List you are searching for does not exist");
       res.redirect("/listing")
+    
     }
     else{
     req.flash("success","Successfully Deleted");
