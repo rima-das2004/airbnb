@@ -9,7 +9,7 @@ const {listingSchema, reviewSchema}=require("../joiSchema.js");
 const passport=require("passport");
 const passportLocal=require("passport-local");
 const passportLocalMongoose=require("passport-local-mongoose");
-const {isLoggedIn}=require("../middleware.js")
+const {isLoggedIn, isOwner}=require("../middleware.js");
 
 
 const validateListing=(req,res,next)=>{
@@ -39,13 +39,21 @@ router.post("/",validateListing,asyncWrap( async (req,res)=>{
 
     //console.log(list)
     let newSample= new listing(list)
+    newSample.owner=req.user._id
+    //console.log("session",req,req.session)
     await newSample.save();
     req.flash("success","Listing is created successfully")
     res.redirect("/listing");
   }))
 router.get("/:id",asyncWrap( async (req,res)=>{
     let {id}=req.params;
-    let DataById=await listing.findById(id).populate("reviews");
+    let DataById=await listing.findById(id).populate({
+      path:"reviews",
+      populate:{
+        path:"author",
+      }
+    }).populate("owner");
+    console.log(DataById)
     if(!DataById){
       req.flash("error","List you are searching for does not exist");
       res.redirect("/listing")
@@ -56,7 +64,7 @@ router.get("/:id",asyncWrap( async (req,res)=>{
     
   }))
   
-router.get("/:id/edit",isLoggedIn,asyncWrap(async(req,res)=>{
+router.get("/:id/edit",isLoggedIn,isOwner,asyncWrap(async(req,res)=>{
     let {id}=req.params;
     console.log(id)
     let EditData=await listing.findById(id)
@@ -69,11 +77,10 @@ router.get("/:id/edit",isLoggedIn,asyncWrap(async(req,res)=>{
     res.render("listing/edit.ejs",{EditData});}
   }))
   
-router.put("/:id",validateListing,asyncWrap( async (req,res)=>{
+router.put("/:id",validateListing,isOwner,asyncWrap( async (req,res)=>{
     console.log(req.params)
     let {id}=req.params;
     let dataEdit=req.body.listing; 
-    //console.log(dataEdit)
     const spread=await listing.findByIdAndUpdate(id,{...dataEdit})
     if(!spread){
       req.flash("error","List you are searching for does not exist");
@@ -86,7 +93,7 @@ router.put("/:id",validateListing,asyncWrap( async (req,res)=>{
     }
   }))
   
-router.delete("/:id",isLoggedIn,asyncWrap(  async (req,res)=>{
+router.delete("/:id",isLoggedIn,isOwner,asyncWrap(  async (req,res)=>{
     let {id}=req.params;
     let data=await listing.findByIdAndDelete(id)
     if(!data){
